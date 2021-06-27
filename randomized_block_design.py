@@ -14,12 +14,12 @@ def get_y_dot_j_list(data):
 	c1, c2 = get_constants(data)
 	y_dot_j_list = [sum([row[j] for row in data])/c1 for j in range(c2)]
 	return y_dot_j_list
-	
+
 def get_y_i_dot_list(data):
 	c1, c2 = get_constants(data)
 	y_i_dot_list = [sum(row)/c2 for row in data]
 	return y_i_dot_list
-	
+
 # Factor Sum of Squares
 def FSS(data):
 	# ΣΣ(Y.j - Ȳ)^2
@@ -46,7 +46,7 @@ def TSS(data):
 	#-----------------------------
 	tss = sum([(y_i_j - y_bar)**2 for row in data for y_i_j in row])
 	return tss
-	
+
 # Error Sum of Squares
 def ESS(data):
 	# ΣΣ(Yij -Yi. -Y.j + Ȳ)^2
@@ -79,11 +79,11 @@ def DF_list(data):
 def MS_list(data):
 	ss_list = SS_list(data)
 	df_list = DF_list(data)
-	return {"MSF": 
+	return {"MSF":
 			convert_precision(ss_list["FSS"] / df_list["ν(Factor)"]),
-	        "MSB": 
+	        "MSB":
 			convert_precision(ss_list["BSS"] / df_list["ν(Block)"]),
-			"MSE": 
+			"MSE":
 			convert_precision(ss_list["ESS"] / df_list["ν(Error)"])}
 
 # List of "F value" (i.e. F1 and F2)
@@ -99,26 +99,26 @@ def convert_precision(number, precision=4):
 # Print out ANOVA Table simply!
 def show_ANOVA_Table(data):
 	print('='*15, "  ANOVA Table", '='*15, sep='\n')
-	print("  ", *(f"{text}\t\t" for text in ("Source", "SS", "DF", "MS", "F")), sep='')
+	print("  ", *(f"{text}\t\t " for text in ("Source", "SS", "DF", "MS", "F")), sep='')
 	ss_list = SS_list(data)
 	df_list = DF_list(data)
 	ms_list = MS_list(data)
 	f_list = F_list(data)
 	# (1) Factor
 	print("  Factor\t"+\
-		  f'  FSS={ss_list["FSS"]}\t\t{df_list["ν(Factor)"]}\t\t'+\
-	      f'{ms_list["MSF"]}\t\t{f_list["F1"]}')
+		  f'FSS={ss_list["FSS"]}\t {df_list["ν(Factor)"]}\t\t'+\
+	      f'{ms_list["MSF"]}\t{f_list["F1"]}')
 	# (2) Block
 	print("  Block\t\t"+\
-		  f'  BSS={ss_list["BSS"]}\t\t{df_list["ν(Block)"]}\t\t'+\
-	      f'{ms_list["MSB"]}\t\t{f_list["F2"]}')
+		  f'BSS={ss_list["BSS"]}\t {df_list["ν(Block)"]}\t\t'+\
+	      f'{ms_list["MSB"]}\t{f_list["F2"]}')
 	# (3) Error
 	print("  Error\t\t"+\
-		  f'  ESS={ss_list["ESS"]}\t\t{df_list["ν(Error)"]}\t\t'+\
+		  f'ESS={ss_list["ESS"]}\t {df_list["ν(Error)"]}\t\t'+\
 	      f'{ms_list["MSE"]}')
 	# (4) Total
 	print("  Total\t\t"+\
-		  f'  TSS={ss_list["TSS"]}\t\t{df_list["ν(Total)"]}\t\t')
+		  f'TSS={ss_list["TSS"]}\t {df_list["ν(Total)"]}\t\t')
 
 if __name__ == "__main__":
 	"""
@@ -132,19 +132,19 @@ if __name__ == "__main__":
 			[10,13,9],
 			[14,18,10],
 			[8,11,7]]
-	
+
 	'''
 	print(FSS(data))
 	print(BSS(data))
 	print(ESS(data))
 	print(TSS(data))
 	'''
-	
+
 	'''
 	print(SS_list(data))
 	print(DF_list(data))
 	print(MS_list(data))
 	print(F_list(data))
 	'''
-	
+
 	show_ANOVA_Table(data)
